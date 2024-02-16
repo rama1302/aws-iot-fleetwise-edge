@@ -110,6 +110,7 @@ AwsIotChannel::subscribe()
         }
 
         FWE_LOG_TRACE( "Subscribe succeeded for topic " + mTopicName + " with QoS " + grantedQoS );
+        FWE_LOG_INFO( "SUbscribed to the Topic.."+ mTopicName);
         mSubscribed = true;
         subscribeFinishedPromise.set_value( true );
     };
@@ -188,7 +189,8 @@ AwsIotChannel::sendBuffer( const std::uint8_t *buf, size_t size, CollectionSchem
                        " because IoT device SDK allocated the maximum defined memory. Payload will be stored" );
 
         if ( collectionSchemeParams.persist )
-        {
+        {   
+             FWE_LOG_INFO("Storing the collected serialized Data ")
             mPayloadManager->storeData( buf, size, collectionSchemeParams );
         }
         else
@@ -289,6 +291,7 @@ AwsIotChannel::publishMessage( const uint8_t *buf, size_t size )
         if ( result->wasSuccessful() )
         {
             FWE_LOG_TRACE( "Publish succeeded" );
+             FWE_LOG_INFO( "Message Published to " + mTopicName );
             mPayloadCountSent++;
         }
         else
@@ -308,10 +311,11 @@ AwsIotChannel::publishMessage( const uint8_t *buf, size_t size )
 bool
 AwsIotChannel::unsubscribe()
 {
-    std::lock_guard<std::mutex> connectivityLock( mConnectivityMutex );
+    std::lock_guard<std::mutex> connectivityLock( mConnectivityMutex );    
     if ( isAliveNotThreadSafe() )
     {
         std::promise<bool> unsubscribeFinishedPromise;
+        FWE_LOG_INFO( "Unscribing to the topics...");
         FWE_LOG_TRACE( "Unsubscribing..." );
         auto unsubPacket = std::make_shared<Aws::Crt::Mqtt5::UnsubscribePacket>();
         // coverity[cert_str51_cpp_violation] - pointer comes from std::string, which can't be null

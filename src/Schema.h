@@ -100,8 +100,9 @@ private:
 
         void
         onDataReceived( const uint8_t *buf, size_t size ) override
-        {
-            // Check for a empty input data
+        {    
+            FWE_LOG_INFO("Decoder Data receievd call back function...");
+                     // Check for a empty input data
             if ( ( buf == nullptr ) || ( size == 0 ) )
             {
                 FWE_LOG_ERROR( "Received empty CollectionScheme List data from Cloud" );
@@ -116,6 +117,10 @@ private:
             {
                 FWE_LOG_ERROR( "DecoderManifest copyData from IoT core failed" );
                 return;
+            }
+              else
+            {
+                FWE_LOG_INFO(" Binary Decoder Copied ");
             }
 
             // Successful copy, so we cache the decoderManifest in the Schema object
@@ -146,7 +151,8 @@ private:
 
         void
         onDataReceived( const uint8_t *buf, size_t size ) override
-        {
+        {    
+            FWE_LOG_INFO("collection Scheme Data receievd call back function...");
             // Check for a empty input data
             if ( ( buf == nullptr ) || ( size == 0 ) )
             {
@@ -162,6 +168,10 @@ private:
             {
                 FWE_LOG_ERROR( "CollectionSchemeList copyData from IoT core failed" );
                 return;
+            }
+              else
+            {
+                FWE_LOG_INFO(" Binary collection Scheme Copied ");
             }
 
             // Successful copy, so we cache the collectionSchemeList in the Schema object

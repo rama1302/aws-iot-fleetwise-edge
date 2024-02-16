@@ -78,6 +78,7 @@ AwsIotConnectivityModule::createNewChannel( const std::shared_ptr<PayloadManager
         std::lock_guard<std::mutex> lock( mTopicToChannelMutex );
         mTopicToChannel[topicName] = channel;
     }
+    //FWE_LOG_INFO(" New Channel created for the Topic : "+ topicName);
     return channel;
 }
 
@@ -250,11 +251,14 @@ AwsIotConnectivityModule::createMqttConnection()
     mMqttClientBuilder->WithPublishReceivedCallback( [&]( const Aws::Crt::Mqtt5::PublishReceivedEventData &eventData ) {
         std::ostringstream os;
         os << "Data received on the topic: " << eventData.publishPacket->getTopic()
-           << " with a payload length of: " << eventData.publishPacket->getPayload().len;
+           << " with a payload length of: " << eventData.publishPacket->getPayload().len
+           << " And Payload...." << eventData.publishPacket->getPayload().ptr;
+        FWE_LOG_INFO( os.str() );
         FWE_LOG_TRACE( os.str() );
 
         // coverity[cert_str51_cpp_violation] - pointer comes from std::string, which can't be null
         auto topic = std::string( eventData.publishPacket->getTopic().c_str() );
+        FWE_LOG_INFO( "Data received from the cloud on the topic "+ topic );
         std::shared_ptr<AwsIotChannel> channel;
         {
             std::lock_guard<std::mutex> lock( mTopicToChannelMutex );

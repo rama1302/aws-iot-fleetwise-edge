@@ -101,5 +101,9 @@ if __name__ == "__main__":
     for column in df.columns:
         fig.add_trace(go.Scatter(x=df.index, y=df[column], mode="markers", name=column))
 
+    fig.update_layout(
+        xaxis_title="Time",
+        yaxis_title="Value"
+    )
     with open(args.html_filename, "w") as fp:
         fp.write(fig.to_html())

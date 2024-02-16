@@ -78,6 +78,7 @@ Schema::transmitCheckin()
     if ( res == ConnectivityError::Success )
     {
         FWE_LOG_TRACE( "Checkin Message sent to the backend" );
+        FWE_LOG_INFO( " Checkin Sent to cloud..");
 
         // Trace log for more verbose Checkin Info
         std::string checkinDebugString;
@@ -95,6 +96,7 @@ Schema::transmitCheckin()
         checkinDebugString += "]";
 
         FWE_LOG_TRACE( checkinDebugString );
+         FWE_LOG_INFO( checkinDebugString);
         return true;
     }
     else if ( res == ConnectivityError::NoConnection )

@@ -214,6 +214,9 @@ CANDataSource::doWork( void *data )
                                                     : TraceVariable::READ_SOCKET_FRAMES_19,
                                                 dataSource->mReceivedMessages );
                 std::lock_guard<std::mutex> lock( dataSource->mDecoderDictMutex );
+                // FWE_LOG_INFO(" Received CAN Frame..");
+                // FWE_LOG_INFO(std::to_string(frame[i].can_id).c_str());
+                // FWE_LOG_INFO("passing the Frames to decode...");
                 dataSource->mConsumer.processMessage( dataSource->mChannelId,
                                                       dataSource->mDecoderDictionary,
                                                       frame[i].can_id,
@@ -286,7 +289,11 @@ CANDataSource::connect()
         FWE_LOG_ERROR( "CAN Interface with name " + mIfName + " is not accessible" );
         close( mSocket );
         return false;
-    }
+    } 
+    // else 
+    // {
+    //        FWE_LOG_INFO( "CAN Interface accessible " + mIfName );
+    // }
     if ( ( mTimestampTypeToUse == CanTimestampType::KERNEL_SOFTWARE_TIMESTAMP ) ||
          ( mTimestampTypeToUse == CanTimestampType::KERNEL_HARDWARE_TIMESTAMP ) )
     {
@@ -352,6 +359,7 @@ CANDataSource::onChangeOfActiveDictionary( ConstDecoderDictionaryConstPtr &dicti
     else
     {
         FWE_LOG_TRACE( "Resuming Network data acquisition on Data Source: " + std::to_string( mChannelId ) );
+        //FWE_LOG_INFO( "Resuming Network data acquisition on Data Source: " + std::to_string( mChannelId ) );
         // Wake up the worker thread.
         mWait.notify();
     }

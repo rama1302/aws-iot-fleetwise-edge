@@ -125,7 +125,8 @@ CollectionInspectionWorkerThread::doWork( void *data )
     {
         activations++;
         if ( consumer->fUpdatedInspectionMatrixAvailable )
-        {
+        {   
+            FWE_LOG_INFO("Inspection Matrix Available ")
             std::shared_ptr<const InspectionMatrix> newInspectionMatrix;
             {
                 std::lock_guard<std::mutex> lock( consumer->fInspectionMatrixMutex );
@@ -278,8 +279,11 @@ CollectionInspectionWorkerThread::doWork( void *data )
                 }
 
                 lastTimeEvaluated = consumer->fClock->timeSinceEpoch();
+
+                FWE_LOG_INFO("Evaluating conditions for the signals ...");
                 consumer->fCollectionInspectionEngine.evaluateConditions( lastTimeEvaluated );
 
+                  FWE_LOG_INFO(" Collecting Data for Upload ");
                 // Initiate data collection and upload after every condition evaluation
                 statisticDataSentOut += consumer->collectDataAndUpload();
             };
@@ -337,7 +341,7 @@ CollectionInspectionWorkerThread::collectDataAndUpload()
             FWE_LOG_WARN( "Collected data output buffer is full" );
         }
         else
-        {
+        {   FWE_LOG_INFO("Notifying Listeners that data is ready to publish ");
             collectedDataPackages++;
             this->notifyListeners<>( &IDataReadyToPublishListener::onDataReadyToPublish );
         }

@@ -92,7 +92,8 @@ CollectionSchemeManager::decoderDictionaryExtractor(
             }
 
             if ( networkType == VehicleDataSourceProtocol::RAW_SOCKET )
-            {
+            {   
+                FWE_LOG_INFO("Buidling dicitionary for RAW_SOCKET");
                 auto canRawFrameID = mDecoderManifest->getCANFrameAndInterfaceID( signalId ).first;
                 auto interfaceId = mDecoderManifest->getCANFrameAndInterfaceID( signalId ).second;
 
@@ -109,7 +110,8 @@ CollectionSchemeManager::decoderDictionaryExtractor(
                                   std::to_string( signalId ) );
                 }
                 else
-                {
+                {   
+                    //FWE_LOG_INFO("Adding the signals to the dictionary..." + std::to_string(signalId));
                     // Add signalID to the set of this decoder dictionary
                     canDecoderDictionaryPtr->signalIDsToCollect.insert( signalId );
                     // firstly check if we have canChannelID entry at dictionary top layer
@@ -159,7 +161,8 @@ CollectionSchemeManager::decoderDictionaryExtractor(
                                   std::to_string( signalId ) );
                 }
                 else
-                {
+                {   
+                    //FWE_LOG_INFO("Adding signal to the dictionary.." + std::to_string(signalId));
                     obdPidCanDecoderDictionaryPtr->signalIDsToCollect.insert( signalId );
                     obdPidCanDecoderDictionaryPtr->canMessageDecoderMethod.emplace(
                         canChannelID, std::unordered_map<CANRawFrameID, CANMessageDecoderMethod>() );

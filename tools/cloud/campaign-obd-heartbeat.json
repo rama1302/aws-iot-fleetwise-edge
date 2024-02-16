@@ -6,25 +6,11 @@
     "timeBasedCollectionScheme": {
       "periodMs": 10000
     }
-  },
+  }, 
   "signalsToCollect": [
     {
-      "name": "Vehicle.OBD.EngineSpeed"
-    },
-    {
-      "name": "Vehicle.OBD.Speed"
-    },
-    {
-      "name": "Vehicle.OBD.AmbientAirTemperature"
-    },
-    {
-      "name": "Vehicle.OBD.EngineCoolantTemperature"
-    },
-    {
-      "name": "Vehicle.OBD.ThrottlePosition"
-    },
-    {
-      "name": "Vehicle.OBD.FuelLevel"
-    }
+      "name": "Vehicle.OBD.EngineSpeed",
+      "maxSampleCount": 10
+    }   
   ]
 }
